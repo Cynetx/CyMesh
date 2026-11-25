@@ -1,0 +1,28 @@
+# Build products and tool caches
+/target/
+/dist-windows/
+/src-tauri/gen/
+node_modules/
+ui/dist/
+ui/.vite/
+*.exe
+*.msi
+*.dll
+*.zip
+
+# Local credentials, vaults and logs
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.p12
+*.db
+*.redb
+*.vault
+vault.meta.json
+cymesh-vault/
+cymesh-relay-data/
+*.log
+.DS_Store
+Thumbs.db

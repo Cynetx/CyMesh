@@ -1,0 +1,28 @@
+[package]
+name = "aegis-mesh-app"
+version = "0.1.0"
+description = "Zero-Server End-to-End Encrypted Cyber Messenger"
+authors.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license = "MIT"
+edition = "2021"
+
+[lib]
+name = "aegis_mesh_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+aegis-core = { path = "../crates/aegis-core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"

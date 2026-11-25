@@ -1,0 +1,19 @@
+{
+  "name": "cymesh-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://cynetx.ir",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cynetx/CyMesh.git"
+  },
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.6"
+  }
+}

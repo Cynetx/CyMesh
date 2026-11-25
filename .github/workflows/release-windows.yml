@@ -1,0 +1,42 @@
+name: Test and build Windows
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --locked -p aegis-core
+
+  build-windows:
+    needs: test-core
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            ui/package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+      - run: npm --prefix ui ci
+      - run: npm run build -- --ci --bundles nsis -- --locked
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Cymesh-Windows-x64
+          if-no-files-found: error
+          path: |
+            target/release/Cymesh.exe
+            target/release/bundle/nsis/*.exe
