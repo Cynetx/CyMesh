@@ -7,6 +7,15 @@ cd "$root"
 target=x86_64-pc-windows-gnu
 export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$root/target}"
 out_dir="${CYMESH_DIST_DIR:-$root/dist-windows}"
+profile="${CYMESH_BUILDER_PROFILE:-}"
+if [[ -n "$profile" && ! "$profile" =~ ^relay-[a-f0-9]{12}$ ]]; then
+    echo "Invalid CyMesh relay profile" >&2
+    exit 1
+fi
+profile_arg=""
+if [[ -n "$profile" ]]; then
+    profile_arg=" -Profile $profile"
+fi
 
 cargo test --locked -p aegis-core
 npm --prefix ui ci
@@ -22,11 +31,8 @@ if [[ -f "$build_dir/WebView2Loader.dll" ]]; then
     install -m 644 "$build_dir/WebView2Loader.dll" "$out_dir/WebView2Loader.dll"
 fi
 
-cat > "$out_dir/Install-Cymesh.cmd" <<'CMD'
-@echo off
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0install-shortcuts.ps1"
-exit /b %ERRORLEVEL%
-CMD
+printf '@echo off\r\npowershell -NoProfile -ExecutionPolicy Bypass -File "%%~dp0install-shortcuts.ps1"%s\r\nexit /b %%ERRORLEVEL%%\r\n' \
+    "$profile_arg" > "$out_dir/Install-Cymesh.cmd"
 
 files=(Cymesh.exe Install-Cymesh.cmd install-shortcuts.ps1 LICENSE)
 if [[ -f "$build_dir/WebView2Loader.dll" ]]; then

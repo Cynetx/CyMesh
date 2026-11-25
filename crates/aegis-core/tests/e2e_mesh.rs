@@ -745,3 +745,58 @@ async fn test_mesh_relay_delivery_receipt_and_read_receipt() {
     }
     assert!(alice_read, "Alice should receive Read status (cyan double-check) via mesh relay");
 }
+
+#[tokio::test]
+async fn test_initial_bootstrap_peer_for_new_and_recovered_vaults() {
+    let relay_dir = TempDir::new().unwrap();
+    let custom_dir = TempDir::new().unwrap();
+    let restored_dir = TempDir::new().unwrap();
+    let (relay, _) = setup_test_node(&relay_dir, 0, "relay-pin", "Relay", "builder_relay", 0).await;
+    assert!(relay.get_settings().await.unwrap().bootstrap_peers.is_empty());
+    let relay_port = relay.get_network_telemetry().await.unwrap().node_listening_port;
+    let address = std::net::SocketAddr::from(([127, 0, 0, 1], relay_port));
+    let custom = AegisNode::new(custom_dir.path().to_path_buf(), 0).with_initial_bootstrap_peer(address);
+    let created = custom
+        .create_identity_and_vault(
+            "client-pin",
+            "Client".into(),
+            "builder_client".into(),
+            String::new(),
+            "Mesh Node".into(),
+            "#00F0FF".into(),
+            None,
+        )
+        .await
+        .unwrap();
+
+    let expected = vec![address.to_string()];
+    assert_eq!(custom.get_settings().await.unwrap().bootstrap_peers, expected);
+    for _ in 0..25 {
+        if custom.get_network_telemetry().await.unwrap().active_direct_peers > 0 {
+            break;
+        }
+        sleep(Duration::from_millis(120)).await;
+    }
+    assert!(custom.get_network_telemetry().await.unwrap().active_direct_peers > 0);
+
+    assert!(custom.remove_bootstrap_peer(&address.to_string()).await.unwrap().is_empty());
+    custom.lock_vault().await;
+    custom.unlock_vault("client-pin").await.unwrap();
+    assert!(custom.get_settings().await.unwrap().bootstrap_peers.is_empty());
+    custom.lock_vault().await;
+
+    let restored = AegisNode::new(restored_dir.path().to_path_buf(), 0).with_initial_bootstrap_peer(address);
+    restored
+        .recover_identity_and_vault(
+            &created.recovery_mnemonic,
+            "restore-pin",
+            "Restored".into(),
+            "builder_client".into(),
+            String::new(),
+            "Mesh Node".into(),
+            "#00F0FF".into(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(restored.get_settings().await.unwrap().bootstrap_peers, expected);
+}

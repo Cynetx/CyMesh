@@ -7,6 +7,8 @@
 #>
 param(
     [string]$ExePath = "",
+    [ValidatePattern("^relay-[a-f0-9]{12}$")]
+    [string]$Profile,
     [switch]$AddFirewallRules
 )
 
@@ -35,7 +37,13 @@ if ([string]::IsNullOrWhiteSpace($ExePath) -or -not (Test-Path $ExePath)) {
 
 $ExePath = (Resolve-Path -LiteralPath $ExePath).Path
 $SourceDir = Split-Path -Parent $ExePath
-$InstallDir = Join-Path $env:LOCALAPPDATA "CymeshOpenSource"
+$FolderName = "CymeshOpenSource"
+$ShortcutName = "Cymesh Open Source.lnk"
+if ($Profile) {
+    $FolderName = "Cymesh-$Profile"
+    $ShortcutName = "Cymesh $Profile.lnk"
+}
+$InstallDir = Join-Path $env:LOCALAPPDATA $FolderName
 New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
 $TargetExe = Join-Path $InstallDir "Cymesh.exe"
 if ($ExePath -ne $TargetExe) {
@@ -49,8 +57,8 @@ if ($LoaderDll -ne $TargetLoaderDll -and (Test-Path -LiteralPath $LoaderDll)) {
 }
 
 $WshShell = New-Object -ComObject WScript.Shell
-$DesktopLnk = Join-Path ([Environment]::GetFolderPath("Desktop")) "Cymesh Open Source.lnk"
-$StartMenuLnk = Join-Path ([Environment]::GetFolderPath("Programs")) "Cymesh Open Source.lnk"
+$DesktopLnk = Join-Path ([Environment]::GetFolderPath("Desktop")) $ShortcutName
+$StartMenuLnk = Join-Path ([Environment]::GetFolderPath("Programs")) $ShortcutName
 
 foreach ($LnkPath in @($DesktopLnk, $StartMenuLnk)) {
     $Shortcut = $WshShell.CreateShortcut($LnkPath)

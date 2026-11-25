@@ -6,6 +6,7 @@
   <p>
     <a href="README.fa.md">فارسی</a> ·
     <a href="https://github.com/Cynetx/CyMesh/actions/workflows/release-windows.yml">Windows builds</a> ·
+    <a href="#relay-builder">Relay builder</a> ·
     <a href="CONTRIBUTING.md">Contribute</a>
   </p>
   <p>
@@ -89,6 +90,25 @@ unset relay_pin
 ```
 
 Use a dedicated, unprivileged account and keep the vault passphrase for restarts. From each client, add the relay’s reachable IP and port under **Add Bridge**. The default mesh port is **47833 over TCP and UDP**. LAN discovery uses **UDP 47832** by default. Run `cymesh-relay --help` for its data directory and bootstrap options.
+
+<a name="relay-builder"></a>
+
+### Build a Windows client preconfigured for your relay
+
+The standalone builder makes a separate Windows edition for your group. It fills the initial bridge setting when a user creates or recovers an identity in that edition. Users can remove the bridge in Settings. **Contribute Volunteer Relay** inside the app remains the way to register and announce a relay to the existing mesh.
+
+On your build machine, run from the source checkout:
+
+```sh
+npm run relay-builder
+```
+
+Enter the IPv4 address that clients can reach and the relay's TCP/UDP port (default `47833`). The builder prints the relay start commands for your Linux server and the exact `npm run relay-builder -- build <profile-id>` command to run on your build machine. Set up the relay and permit its port on the network before testing the client. The relay vault passphrase is entered on the server when starting the relay.
+
+- **Windows** uses the [Windows build prerequisites](#build-from-source) and makes an x64 NSIS installer.
+- **Linux** uses the MinGW-w64, `zip`, and Rust target prerequisites in the [portable build instructions](#build-from-source) and makes a Windows x64 portable ZIP.
+
+The output is in `.cymesh-builder/<profile-id>/windows/`. Install the NSIS package or unpack the portable ZIP and open `Cymesh.exe`; the first unlocked session can contact the configured relay immediately. Each relay profile has its own vault and shortcuts. The relay address is readable from the resulting app. Share the build accordingly and use the relay's network controls to decide who can reach it.
 
 ## Architecture and privacy
 

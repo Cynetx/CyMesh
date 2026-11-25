@@ -131,6 +131,7 @@ impl Drop for ActiveRuntime {
 pub struct AegisNode {
     data_dir: PathBuf,
     discovery_port: u16,
+    initial_bootstrap_peer: Option<SocketAddr>,
     runtime: Arc<tokio::sync::RwLock<Option<ActiveRuntime>>>,
     events_tx: broadcast::Sender<CoreEvent>,
 }
@@ -141,6 +142,7 @@ impl AegisNode {
         Self {
             data_dir,
             discovery_port,
+            initial_bootstrap_peer: None,
             runtime: Arc::new(tokio::sync::RwLock::new(None)),
             events_tx,
         }
@@ -148,6 +150,29 @@ impl AegisNode {
 
     pub fn new_default(data_dir: PathBuf) -> Self {
         Self::new(data_dir, DEFAULT_DISCOVERY_PORT)
+    }
+
+    /// Sets a bridge for newly created or recovered primary vaults.
+    pub fn with_initial_bootstrap_peer(mut self, peer: SocketAddr) -> Self {
+        self.initial_bootstrap_peer = Some(peer);
+        self
+    }
+
+    fn create_vault(
+        &self,
+        pin: &str,
+        keys: &IdentityKeys,
+        profile: &SignedProfileCard,
+        duress_pin: Option<(&str, DuressAction)>,
+    ) -> Result<()> {
+        let mut settings = AppSettings::default();
+        settings
+            .bootstrap_peers
+            .extend(self.initial_bootstrap_peer.map(|peer| peer.to_string()));
+        UnlockedVault::create_new_with_settings(
+            &self.data_dir, pin, keys, profile, duress_pin, &settings,
+        )?;
+        Ok(())
     }
 
     pub fn subscribe(&self) -> broadcast::Receiver<CoreEvent> {
@@ -195,8 +220,7 @@ impl AegisNode {
         );
 
         let duress_ref = duress_pin.as_ref().map(|(p, a)| (p.as_str(), *a));
-        let vault = UnlockedVault::create_new(&self.data_dir, pin, &keys, &profile, duress_ref)?;
-        drop(vault);
+        self.create_vault(pin, &keys, &profile, duress_ref)?;
 
         self.unlock_vault(pin).await?;
 
@@ -233,8 +257,7 @@ impl AegisNode {
             PresenceStatus::Online,
         );
 
-        let vault = UnlockedVault::create_new(&self.data_dir, pin, &keys, &profile, None)?;
-        drop(vault);
+        self.create_vault(pin, &keys, &profile, None)?;
 
         self.unlock_vault(pin).await?;
 

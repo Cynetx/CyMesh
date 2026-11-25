@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "tauri dev",
     "build": "tauri build",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "relay-builder": "node scripts/relay-builder.mjs"
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.12.6"

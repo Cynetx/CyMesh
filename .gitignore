@@ -26,3 +26,7 @@ cymesh-relay-data/
 *.log
 .DS_Store
 Thumbs.db
+
+# Locally generated relay-builder profiles and outputs
+/.cymesh-builder/
+/ir.cynetx.cymesh.*/

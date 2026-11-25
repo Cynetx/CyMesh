@@ -120,6 +120,19 @@ impl UnlockedVault {
         profile: &SignedProfileCard,
         duress_pin: Option<(&str, DuressAction)>,
     ) -> Result<Self> {
+        Self::create_new_with_settings(
+            data_dir, pin, keys, profile, duress_pin, &AppSettings::default(),
+        )
+    }
+
+    pub(crate) fn create_new_with_settings(
+        data_dir: &Path,
+        pin: &str,
+        keys: &IdentityKeys,
+        profile: &SignedProfileCard,
+        duress_pin: Option<(&str, DuressAction)>,
+        settings: &AppSettings,
+    ) -> Result<Self> {
         fs::create_dir_all(data_dir)?;
         let meta_path = Self::metadata_path(data_dir);
         if meta_path.exists() {
@@ -165,7 +178,7 @@ impl UnlockedVault {
         };
         vault.save_identity_seed(&keys.master_seed)?;
         vault.save_own_profile(profile)?;
-        vault.save_settings(&AppSettings::default())?;
+        vault.save_settings(settings)?;
 
         // Prepare empty decoy database if decoy duress mode was configured
         if let (Some(d_salt), Some(DuressAction::Decoy), Some((d_pin, _))) =

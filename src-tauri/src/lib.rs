@@ -460,7 +460,15 @@ async fn install_windows_shortcuts() -> Result<String, String> {
     {
         let exe_path = std::env::current_exe().map_err(|e| e.to_string())?;
         let local_app_data = std::env::var("LOCALAPPDATA").map_err(|e| e.to_string())?;
-        let target_dir = std::path::PathBuf::from(local_app_data).join("CymeshOpenSource");
+        let name = option_env!("CYMESH_CLIENT_PROFILE").map_or_else(
+            || "Cymesh Open Source".to_owned(),
+            |profile| format!("Cymesh {profile}"),
+        );
+        let folder = option_env!("CYMESH_CLIENT_PROFILE").map_or_else(
+            || "CymeshOpenSource".to_owned(),
+            |profile| format!("Cymesh-{profile}"),
+        );
+        let target_dir = std::path::PathBuf::from(local_app_data).join(folder);
         std::fs::create_dir_all(&target_dir).map_err(|e| e.to_string())?;
         let target_exe = target_dir.join("Cymesh.exe");
         if exe_path != target_exe {
@@ -478,13 +486,13 @@ async fn install_windows_shortcuts() -> Result<String, String> {
         let ps_script = format!(
             "$ws = New-Object -ComObject WScript.Shell; \
              $desk = [Environment]::GetFolderPath('Desktop'); \
-             $s1 = $ws.CreateShortcut(\"$desk\\Cymesh Open Source.lnk\"); \
+             $s1 = $ws.CreateShortcut(\"$desk\\{name}.lnk\"); \
              $s1.TargetPath = '{target_str}'; \
              $s1.WorkingDirectory = '{dir_str}'; \
              $s1.Description = 'Cymesh Zero-Server Encrypted Messenger'; \
              $s1.Save(); \
              $prog = [Environment]::GetFolderPath('Programs'); \
-             $s2 = $ws.CreateShortcut(\"$prog\\Cymesh Open Source.lnk\"); \
+             $s2 = $ws.CreateShortcut(\"$prog\\{name}.lnk\"); \
              $s2.TargetPath = '{target_str}'; \
              $s2.WorkingDirectory = '{dir_str}'; \
              $s2.Description = 'Cymesh Zero-Server Encrypted Messenger'; \
@@ -516,8 +524,17 @@ pub fn run() {
             let data_dir = app
                 .path()
                 .app_local_data_dir()
-                .unwrap_or_else(|_| std::path::PathBuf::from("./cymesh-vault"));
-            let node = Arc::new(AegisNode::new_default(data_dir));
+                .unwrap_or_else(|_| {
+                    option_env!("CYMESH_CLIENT_PROFILE").map_or_else(
+                        || std::path::PathBuf::from("./cymesh-vault"),
+                        |_| std::path::PathBuf::from(&app.config().identifier).join("vault"),
+                    )
+                });
+            let mut node = AegisNode::new_default(data_dir);
+            if let Some(relay) = option_env!("CYMESH_CLIENT_RELAY") {
+                node = node.with_initial_bootstrap_peer(relay.parse()?);
+            }
+            let node = Arc::new(node);
 
             let mut rx = node.subscribe();
             let app_handle = app.handle().clone();
