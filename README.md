@@ -1,53 +1,84 @@
-# Cymesh
+<div align="center">
+  <img src="cymesh-cyber-logo.png" width="144" alt="CyMesh logo">
+  <h1>CyMesh</h1>
+  <p><strong>Encrypted peer-to-peer messaging for Windows</strong></p>
+  <p>An open-source project by the <strong>Cynet security team</strong>.</p>
+  <p>
+    <a href="README.fa.md">فارسی</a> ·
+    <a href="https://github.com/Cynetx/CyMesh/actions/workflows/release-windows.yml">Windows builds</a> ·
+    <a href="CONTRIBUTING.md">Contribute</a>
+  </p>
+  <p>
+    <a href="https://github.com/Cynetx/CyMesh/actions/workflows/release-windows.yml"><img src="https://github.com/Cynetx/CyMesh/actions/workflows/release-windows.yml/badge.svg?branch=main" alt="Windows build status"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-00a88f" alt="MIT license"></a>
+  </p>
+</div>
 
-Cymesh is a Windows-first peer-to-peer desktop messenger from the **Cynet security team**. Its React and TypeScript interface supports English and Persian with LTR and RTL layouts. The desktop app uses Tauri and a Rust messaging core. The source is available under the [MIT license](LICENSE).
+Create an identity on your device, share an invite with a friend, and start a conversation. CyMesh can discover peers on a local network and use a bridge you choose when you need to reach someone on another network. Account creation needs no phone number or email.
 
-## فارسی
+## Try it with a friend
 
-**Cymesh** پیام‌رسان همتابه‌همتای تیم امنیتی **ساینت (Cynet)** است. برنامه رابط فارسی و انگلیسی دارد و برای ویندوز طراحی شده است. روی شبکهٔ محلی از کشف همتا استفاده می‌کند. برای پیدا کردن همتا در شبکه‌ای دیگر، آدرس یک پل مورد اعتماد یا بستهٔ `CYMESH-SEED` را از تنظیمات وارد کنید. نسخهٔ عمومی با فهرست پلِ خالی شروع می‌شود.
+1. **Get the Windows app.** Open a successful [Windows build](https://github.com/Cynetx/CyMesh/actions/workflows/release-windows.yml) and look for **Cymesh-Windows-x64** under **Artifacts**. GitHub requires sign-in for artifact downloads. If an artifact is unavailable, [build from source](#build-from-source).
+2. **Create your identity.** Set a PIN to lock the local vault and store the 12 recovery words somewhere private. The recovery phrase restores your identity. Chat history stays in the local vault.
+3. **Exchange an invite.** On the same local network, allow peer discovery and open **Find People** to share an invite link or QR code. You can also search for `@handle#TAG` through reachable peers. To verify your contact, compare the safety code through a channel you already trust.
 
-برای ساخت روی ویندوز، Rust پایدار، Node.js 24 با npm، ابزارهای C++ ویژوال‌استودیو و WebView2 را نصب کنید. دستورهای بخش ساخت و اجرا را از ریشهٔ پروژه اجرا کنید. نصب‌کنندهٔ NSIS در `target/release/bundle/nsis/` ساخته می‌شود.
+**Connecting across networks?** In **Settings**, expand **Advanced Network & Blackout Bridge Kit**, then choose **Add Bridge** to enter a trusted bridge address. You can also import a `CYMESH-SEED` bundle there. CyMesh ships with an empty bridge list. Delivery depends on whether a peer or relay is reachable.
 
-## Build and run | ساخت و اجرا
+## What you can do
 
-Install [stable Rust](https://rustup.rs/), [Node.js 24 with npm](https://nodejs.org/), and the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/). On Windows, use the Microsoft C++ Build Tools with the **Desktop development with C++** workload and install the WebView2 Runtime if needed.
+| Feature | What it does |
+| --- | --- |
+| **Chat in English or Persian** | Switch between left-to-right and right-to-left layouts. Reply, react, edit messages, and set a message expiry timer. |
+| **Reach peers directly or through a relay** | Discover peers on your LAN or through the distributed directory. A reachable relay can hold encrypted packets for later delivery. |
+| **Keep identity and chat data on your device** | Open your encrypted local vault with your PIN. Use the recovery phrase to restore your identity on a new installation. |
+| **See how you’re connected** | Check the connection route, mesh contacts and queued packets in the app. Test a relay you specify from Settings. |
 
-From the repository root:
+## Build from source
+
+Install [stable Rust](https://rustup.rs/), [Node.js 24 with npm](https://nodejs.org/), and the [Tauri prerequisites for your platform](https://v2.tauri.app/start/prerequisites/). On Windows, these include the Visual Studio C++ Build Tools with **Desktop development with C++** and the WebView2 Runtime.
+
+Clone and set up the project from a terminal:
 
 ```sh
+git clone https://github.com/Cynetx/CyMesh.git
+cd CyMesh
 npm ci
 npm --prefix ui ci
 npm run dev
 ```
 
-Use the following commands to test the Rust core, type-check and build the frontend, and produce the Windows NSIS installer:
+Run the Rust tests and build the frontend:
 
 ```sh
 cargo test --locked -p aegis-core
 npm --prefix ui run build
+```
+
+On Windows, build the x64 desktop app and NSIS installer:
+
+```sh
 npm run build -- --bundles nsis -- --locked
 ```
 
-Build the NSIS installer on Windows. The executable is created at `target/release/Cymesh.exe`, and the installer is under `target/release/bundle/nsis/`. GitHub Actions runs the core tests and builds downloadable Windows artifacts for each successful run.
+The executable is `target/release/Cymesh.exe`. The installer is under `target/release/bundle/nsis/`.
 
-For a portable Windows ZIP from Linux, install MinGW-w64, `zip`, Node.js with npm and stable Rust. Then run:
+<details>
+<summary>Build the portable Windows ZIP on Linux</summary>
+
+Install MinGW-w64, `zip`, Rust and Node.js with npm, then run:
 
 ```sh
 rustup target add x86_64-pc-windows-gnu
 ./scripts/build-windows.sh
 ```
 
-The resulting ZIP is written to `dist-windows/`. Windows still needs the WebView2 Runtime to run the portable application.
+The script writes `dist-windows/Cymesh-Windows-x64-Portable.zip`. Windows needs the WebView2 Runtime to run the portable app.
 
-## Connect peers and configure a relay
+</details>
 
-1. Create a local identity. Store the 12 recovery words privately. The phrase restores the identity, while chat history lives in the local vault.
-2. To pair on a LAN, place both peers on a network that permits peer discovery and exchange invite links or use discovery. Across networks, add a reachable, trusted bridge under **Settings → Advanced Network → Add Bridge**, import a seed bundle, or connect to a known peer address.
-3. To verify a contact, compare the safety code using a trusted channel.
+## Run your own relay
 
-The public build has an empty bridge list. Cross-network connectivity depends on reachable peers or relays, network conditions, and firewall and NAT behavior. Local discovery uses UDP 47832 by default. The mesh normally uses port 47833 for TCP and UDP. A network outage can prevent peers from reaching one another.
-
-To build and start the optional relay from Linux in Bash:
+A relay can give your group a reachable entry point across networks. Build and run it on Linux from the project root in Bash:
 
 ```bash
 cargo build --locked --release -p aegis-core --bin cymesh-relay
@@ -57,21 +88,24 @@ CYMESH_RELAY_PIN="$relay_pin" ./target/release/cymesh-relay --port 47833
 unset relay_pin
 ```
 
-Choose a strong, unique passphrase and keep it for future restarts. Run the relay under a dedicated, unprivileged account and add its reachable IP and port in clients that should use it. `--help` lists the storage path and peer options. Share relay invitations and seed bundles only with intended recipients since they may include network addresses.
+Use a dedicated, unprivileged account and keep the vault passphrase for restarts. From each client, add the relay’s reachable IP and port under **Add Bridge**. The default mesh port is **47833 over TCP and UDP**. LAN discovery uses **UDP 47832** by default. Run `cymesh-relay --help` for its data directory and bootstrap options.
 
-## Design and privacy
+## Architecture and privacy
 
-- `ui/` contains the React UI, translations and Tauri bridge. `src-tauri/` contains desktop configuration and command handlers. `crates/aegis-core/` contains identity, encryption, local storage, peer discovery and the relay CLI.
-- The source implements signed profiles, Noise transport, Double Ratchet message encryption, an encrypted local vault, and optional relay, offline delivery and onion routing paths. Peers and relays can observe connection information. The included tests exercise local scenarios. A security audit is a separate activity.
-- The local VPN/proxy check uses local interface and environment information. The optional Iran IP check, disabled by default, contacts third-party HTTPS services that receive the source IP.
-- The public desktop build uses a separate application identifier for its vault. Start with a new test vault when verifying changes.
+| Part | Responsibility |
+| --- | --- |
+| [React UI](ui/src/) | Chat, pairing, settings and Persian/English translations |
+| [Tauri desktop app](src-tauri/) | Windows integration and the bridge between the UI and Rust |
+| [Rust core](crates/aegis-core/) | Identity, encrypted storage, peer discovery, transport and relay |
 
-## Cynet community | جامعهٔ ساینت
+CyMesh implements signed profiles, Noise transport, Double Ratchet message encryption and optional multi-hop onion routing. Peers and relays can observe connection metadata such as IP addresses. A relay, NAT traversal or the offline queue can help when a peer is temporarily unreachable. A network outage can still prevent delivery. The project has automated tests for local multi-peer scenarios.
 
-- [Website · سایت](https://cynetx.ir/)
-- [Forum · انجمن](https://forum.cynetx.ir/)
-- [Telegram channel · کانال تلگرام](https://t.me/cynetx)
-- [Telegram group · گروه تلگرام](https://t.me/cynetgap)
-- [GitHub · گیت‌هاب](https://github.com/Cynetx)
+The client checks local network adapters and proxy settings. The optional country check is off by default. When enabled, third-party HTTPS services receive the connection’s source IP to look up its country. Invite links and seed bundles can contain network addresses, so share them with their intended recipients.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development contributions and [SECURITY.md](SECURITY.md) for private reporting.
+## Help build CyMesh
+
+Try a conversation between two devices, report what worked or where it got stuck, or help polish the Persian and English interfaces. [Open an issue](https://github.com/Cynetx/CyMesh/issues) · [Contributing guide](CONTRIBUTING.md) · [Private security reporting](SECURITY.md)
+
+**Cynet community** · [Website](https://cynetx.ir/) · [Forum](https://forum.cynetx.ir/) · [Telegram channel](https://t.me/cynetx) · [Telegram group](https://t.me/cynetgap) · [GitHub](https://github.com/Cynetx)
+
+CyMesh is available under the [MIT License](LICENSE).

@@ -6,3 +6,16 @@
 4. When changing visible text, update the English and Persian dictionaries and verify the LTR and RTL layouts.
 
 Use synthetic test data and reserved example addresses in fixtures. Keep local configuration, credentials, vaults and compiled outputs outside commits. See [SECURITY.md](SECURITY.md) for private security reports.
+
+## فارسی
+
+<div dir="rtl" lang="fa">
+
+1. برای آماده کردن محیط توسعه، [راهنمای فارسی ساخت](README.fa.md#ساخت-از-روی-سورس) را دنبال کنید.
+2. در گزارش یا درخواست ادغام، سیستم‌عامل و رفتار قابل مشاهده را بنویسید. اگر مشکل شبکه است، توضیح دهید دستگاه‌ها چطور به هم وصل بودند و از هویت‌های آزمایشی استفاده کنید.
+3. برای تغییر در هسته، `cargo test --locked -p aegis-core` را اجرا کنید. برای تغییر رابط، `npm --prefix ui run build` را اجرا کنید.
+4. اگر متن رابط تغییر کرد، هر دو ترجمه را به‌روز کنید و چیدمان فارسی و انگلیسی را بررسی کنید.
+
+در نمونه‌ها از دادهٔ آزمایشی و آدرس‌های رزروشده استفاده کنید. تنظیمات محلی، رمزها، فایل صندوق و خروجی بیلد را خارج از کامیت نگه دارید. [گزارش خصوصی مشکل امنیتی](SECURITY.md#فارسی)
+
+</div>
