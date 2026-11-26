@@ -5,6 +5,7 @@
   <p>Built by the <strong>Cynet security team</strong> · English and Persian</p>
   <p>
     <a href="README.fa.md"><strong>راهنمای فارسی</strong></a> ·
+    <a href="docs/user-guide.md"><strong>Using the app</strong></a> ·
     <a href="#first-chat">First chat</a> ·
     <a href="#relay-builder">Custom build</a> ·
     <a href="#grow-the-mesh">Volunteer in the app</a>
@@ -26,6 +27,8 @@ Open CyMesh on two computers on the same local network. Create an identity on ea
 
 If the two computers are on different networks, open **Settings → Advanced Network & Blackout Bridge Kit → Add Bridge** and enter a trusted bridge address. You can also import a `CYMESH-SEED` bundle from that section. The public build starts with an empty bridge list.
 
+**Just opened the app?** Learn how to edit your profile, turn on Ghost Mode and use each setting. [Plain-language app guide](docs/user-guide.md)
+
 ## What you can do in CyMesh
 
 | In the app | Features |
@@ -34,7 +37,7 @@ If the two computers are on different networks, open **Settings → Advanced Net
 | **Message and chat status** | See when a message is queued, sent directly, relayed, delivered or read. See typing indicators, pin chats and filter by route or verified contact. |
 | **Identity and invitations** | Create an identity on-device, personalize your profile, and connect using an account ID, link, QR code or known peer address. Use Stealth Mode to hide your handle from account searches. |
 | **Local privacy** | Unlock the encrypted vault with a PIN and lock it with `Ctrl+L`. Restore your identity with 12 words or configure an optional duress PIN. |
-| **Peer discovery and routing** | Find peers on your LAN or through a distributed directory. CyMesh can try a direct connection or store and forward encrypted packets through an available relay. Multi-hop onion routing is optional. |
+| **Peer discovery and routing** | Find people on the same local network or with help from other devices. If a direct route is unavailable, a reachable relay can hold encrypted messages for later delivery. |
 | **Diagnostics and controls** | Inspect the active route, known mesh contacts, queued packets and relay activity. Test a relay address from Settings and import or export `CYMESH-SEED` bundles. |
 | **Bilingual desktop** | Switch between English and Persian with left-to-right and right-to-left layouts. The portable Windows app can create desktop and Start Menu shortcuts. |
 
@@ -99,12 +102,12 @@ flowchart LR
     R <-->|Forward when reachable| B
 ```
 
-CyMesh uses signed profiles, Noise transport, Double Ratchet message encryption and an encrypted local vault. Reachability depends on routing, NAT and firewall settings. If there is no route between the peers or via a relay, a message can remain queued.
+A message can go straight to your friend when the devices can reach each other. If the direct route is unavailable, another device called a **relay** can hold the encrypted packet and forward it later. If neither route is available, the message stays queued.
 
 <details>
 <summary><strong>What is visible on the network?</strong></summary>
 
-Peers and relays can see connection metadata, including IP addresses. Invite links and bridge bundles may include network addresses. The client checks local adapters and proxy settings. Its optional country check is off by default and sends the source IP to third-party HTTPS services when enabled. The included automated tests cover local multi-peer scenarios.
+CyMesh uses Double Ratchet to encrypt messages and Noise to protect connections between devices. Peers and relays can still see connection details such as IP addresses. Invite links and bridge bundles may include network addresses. The client checks local adapters and proxy settings. Its optional country check is off by default and sends the source IP to third-party HTTPS services when enabled. The included automated tests cover local multi-peer scenarios.
 
 </details>
 
