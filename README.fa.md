@@ -1,5 +1,5 @@
 <div align="center" dir="rtl" lang="fa">
-  <img src="docs/media/cymesh-mesh-cover.webp" alt="تصویر مفهومی اتصال دو همتا در شبکهٔ سای‌مش">
+  <img src="cymesh-cyber-logo.png" width="144" alt="لوگوی سای‌مش">
   <h1>سای‌مش | CyMesh</h1>
   <p><strong>پیام‌رسان متن‌باز و رمزگذاری‌شدهٔ همتابه‌همتا برای ویندوز</strong></p>
   <p>ساختهٔ <strong>تیم امنیتی ساینت</strong> · فارسی و انگلیسی</p>

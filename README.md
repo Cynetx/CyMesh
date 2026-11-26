@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/media/cymesh-mesh-cover.webp" alt="Illustration of two peers connected through the CyMesh network">
+  <img src="cymesh-cyber-logo.png" width="144" alt="CyMesh logo">
   <h1>CyMesh</h1>
   <p><strong>An open-source, encrypted peer-to-peer messenger for Windows</strong></p>
   <p>Built by the <strong>Cynet security team</strong> · English and Persian</p>
