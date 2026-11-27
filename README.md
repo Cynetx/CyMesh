@@ -16,7 +16,27 @@
 
 Open CyMesh on two computers on the same local network. Create an identity on each, share an invite, and send a message. No phone number or email is required to start. Across networks, you can add a reachable bridge that you trust or run your own relay.
 
-[![CyMesh chat with sample accounts and messages](docs/media/screenshots/en-chat.png)](docs/user-guide.md#start)
+## A look inside CyMesh
+
+Here’s a conversation between Arman and Niloofar. The status under a message tells you whether it arrived or is still waiting for a route. Click any screenshot to read the smaller labels.
+
+[![Main window and message receipts](docs/media/screenshots/en-chat.png)](docs/media/screenshots/en-chat.png)
+
+| Create your identity | Come back to your chats |
+| --- | --- |
+| [![Create your identity](docs/media/screenshots/en-start.png)](docs/media/screenshots/en-start.png)<br>Pick a name your friend will recognize. Your PIN unlocks the vault on this device. | [![Come back to your chats](docs/media/screenshots/en-lock.png)](docs/media/screenshots/en-lock.png)<br>Click Lock when you leave your desk. Use the same PIN when you come back. |
+
+| Find Niloofar | Check who you’re talking to |
+| --- | --- |
+| [![Find Niloofar](docs/media/screenshots/en-find.png)](docs/media/screenshots/en-find.png)<br>Open Find People to copy your invite for Niloofar. If she sent you hers, paste it in this window. | [![Check who you’re talking to](docs/media/screenshots/en-contact.png)](docs/media/screenshots/en-contact.png)<br>Click her name above the chat. Compare the six emojis on a call you trust, then mark her as verified if they match. |
+
+| Reply to the right question | Put a face to your name |
+| --- | --- |
+| [![Reply to the right question](docs/media/screenshots/en-message-actions.png)](docs/media/screenshots/en-message-actions.png)<br>Hover over a message to reply or react. Hover over one you sent to fix a typo. | [![Put a face to your name](docs/media/screenshots/en-settings.png)](docs/media/screenshots/en-settings.png)<br>Open Settings to change your photo, display name and bio. Click Save Profile. Your full shareable ID is in Find People. |
+
+| Choose how people find you | Connect across networks |
+| --- | --- |
+| [![Choose how people find you](docs/media/screenshots/en-privacy.png)](docs/media/screenshots/en-privacy.png)<br>Ghost Mode hides your username from account searches. You can still give someone your invite directly. | [![Connect across networks](docs/media/screenshots/en-bridges.png)](docs/media/screenshots/en-bridges.png)<br>If your friend is on another network and you have a trusted bridge, enter its address under Add Bridge. The public edition starts with an empty bridge list. |
 
 <a name="first-chat"></a>
 
@@ -78,6 +98,8 @@ When someone creates or restores an identity in this edition, CyMesh adds your r
 ### For volunteers · Grow the network from the installed client
 
 Use this path when you want to connect your relay to a mesh you already use. It runs from the existing CyMesh app.
+
+[![Announce a relay from the current client](docs/media/screenshots/en-volunteer.png)](docs/media/screenshots/en-volunteer.png)
 
 1. Unlock the client and open **Settings → Expand Network (Contribute Volunteer Relay)**.
 2. If your relay is still being set up, choose **Copy Setup Command** and run it in the CyMesh source checkout on your Linux relay host. If the relay is already running, use its reachable `IP:Port`.
