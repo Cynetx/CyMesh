@@ -16,6 +16,8 @@
 
 Open CyMesh on two computers on the same local network. Create an identity on each, share an invite, and send a message. No phone number or email is required to start. Across networks, you can add a reachable bridge that you trust or run your own relay.
 
+[![CyMesh chat with sample accounts and messages](docs/media/screenshots/en-chat.png)](docs/user-guide.md#start)
+
 <a name="first-chat"></a>
 
 ## Your first conversation

@@ -4,6 +4,8 @@
 
 This guide starts inside the app. Open CyMesh on two devices to set up a profile, find a friend and send a first message.
 
+Screenshots show the public app running on Linux with sample names and messages. Click an image to open it at full size.
+
 <a name="start"></a>
 
 ## 1. Send a first message
@@ -13,12 +15,30 @@ This guide starts inside the app. Open CyMesh on two devices to set up a profile
 3. To try it for the first time, put both devices on the same local network. Unlock both apps and open **Find People** from the sidebar. Use **Copy Invite Link** and send it to your friend. You can also share the invite QR code or a full ID such as `@handle#TAG`.
 4. Open the chat, type a message and press **Send**. Try the invite link if search finds no match. Across networks, you may need a reachable bridge. [Connect through a bridge](#connections)
 
+<details>
+<summary><strong>Screenshots of account setup, unlocking and Find People</strong></summary>
+
+[![Create an account and choose a name and PIN](media/screenshots/en-start.png)](media/screenshots/en-start.png)
+
+[![Unlock the app with your PIN](media/screenshots/en-lock.png)](media/screenshots/en-lock.png)
+
+[![Find People with account ID and invite controls](media/screenshots/en-find.png)](media/screenshots/en-find.png)
+
+</details>
+
 ## 2. Make your profile yours
 
 1. Open **Settings → Your Account Profile**. The settings button or app logo in the sidebar opens Settings.
 2. Your **Display Name** appears in conversations. Your **Username** is the first part of the ID people can search for. Share your updated full ID if you change the username.
 3. You can choose a photo, avatar color and status tag, and write a short bio. Use the photo buttons to change or remove it. CyMesh strips embedded details such as the location where a photo was taken. Information visible in the picture itself stays visible.
 4. Click **Save Profile**. To check the ID you can share, open **Find People** again.
+
+<details>
+<summary><strong>Screenshot of profile settings</strong></summary>
+
+[![Profile settings and the photo picker](media/screenshots/en-settings.png)](media/screenshots/en-settings.png)
+
+</details>
 
 ## 3. Use the chat controls
 
@@ -31,6 +51,17 @@ This guide starts inside the app. Open CyMesh on two devices to set up a profile
 | Switch language or lock the app | Use the language or lock button in the sidebar. On Windows, `Ctrl+L` also locks the vault. |
 
 **Queued** means the message is waiting for a route. **Sent direct** or **Routed in Mesh** tells you the path used. **Delivered** means the other app confirmed receipt. **Read** means it sent a read receipt.
+
+<details>
+<summary><strong>Screenshots of a chat, message controls and contact profile</strong></summary>
+
+[![Main window with an example conversation](media/screenshots/en-chat.png)](media/screenshots/en-chat.png)
+
+[![Message controls for reactions, replies and editing](media/screenshots/en-message-actions.png)](media/screenshots/en-message-actions.png)
+
+[![Contact profile and safety code](media/screenshots/en-contact.png)](media/screenshots/en-contact.png)
+
+</details>
 
 <a name="privacy"></a>
 
@@ -48,6 +79,13 @@ These controls are also under **Privacy & Mesh Engine**. Click **Apply Network S
 | **Onion Multi-Hop Privacy** | If suitable relays are available, the app can wrap routing information in layers and pass it through several relays. |
 | **Optional Iran IP check** | Off by default. With it on, external services see your IP to look up its country, and the app can block access from outside Iran. The VPN and proxy check is separate. |
 
+<details>
+<summary><strong>Screenshot of Ghost Mode and privacy settings</strong></summary>
+
+[![Ghost Mode and privacy settings](media/screenshots/en-privacy.png)](media/screenshots/en-privacy.png)
+
+</details>
+
 <a name="connections"></a>
 
 ## 5. Connect to a network or help it grow
@@ -56,6 +94,15 @@ These controls are also under **Privacy & Mesh Engine**. Click **Apply Network S
 - **Relay connectivity** lets you check whether your app can reach a specific relay. **Live Mesh Diagnostics** shows how many peers are connected and how many packets are waiting.
 - **Contribute Volunteer Relay** is for someone with a running relay who wants to announce it to peers from the current app. [Volunteer guide](../README.md#grow-the-mesh)
 - **Custom Windows build** is for developers who want to give a group a Windows app with its relay address filled in. [Builder guide](../README.md#relay-builder)
+
+<details>
+<summary><strong>Screenshots of bridge settings and the volunteer section</strong></summary>
+
+[![Add Bridge and import connection addresses](media/screenshots/en-bridges.png)](media/screenshots/en-bridges.png)
+
+[![The volunteer relay section in Settings](media/screenshots/en-volunteer.png)](media/screenshots/en-volunteer.png)
+
+</details>
 
 ## 6. Duress PIN, Windows shortcuts and reset
 
